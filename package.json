@@ -1,0 +1,13 @@
+{
+  "name": "rnd-gpt",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:server": "cd packages/server && pnpm start:dev",
+    "start:client": "cd packages/client && pnpm dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

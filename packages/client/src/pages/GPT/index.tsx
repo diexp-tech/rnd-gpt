@@ -1,6 +1,9 @@
+import AudioRecorder2 from "@/components/AudioRecorder2";
+import Dictaphone from "@/components/Dictaphone";
 import { useMessages } from "@/store/messages";
-import { AppBar, Box, Grid, Typography } from "@mui/material";
-import { useCallback, useEffect } from "react";
+import { MessageRole } from "@/types/message-role.enum";
+import { AppBar, Box, Grid, Skeleton, Typography } from "@mui/material";
+import React, { useCallback, useEffect } from "react";
 import { toast } from "react-toastify";
 import { ChatText, MessageTextInput } from "./components";
 
@@ -58,6 +61,7 @@ export const GPT = () => {
               direction="row"
               item
               xs={12}
+              justifyContent={el.role === MessageRole.CHAT_GPT ? "start" : "end"}
             >
               <ChatText>{el.text}</ChatText>
             </Box>
@@ -69,14 +73,16 @@ export const GPT = () => {
               direction="row"
               item
               xs={12}
+              justifyContent="start"
             >
-              <ChatText>...</ChatText>
+              <Skeleton variant="rounded" width="35%" height={32} />
             </Box>
           )}
         </Box>
       </Grid>
       <Grid item width="100%">
         <MessageTextInput setMessage={sendUserMessage} />
+        <Dictaphone />
       </Grid>
     </Grid>
   );

@@ -1,8 +1,8 @@
 import { MessageRole } from "@/types/message-role.enum";
-import { IMessage, IMessagesState } from "@/types/store";
+import { IMessagesState } from "@/types/store";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import instance from "../middleware/api";
+import { IMessage } from "@/models/models";
 import { useStore } from "./global";
 
 // Create a context to manage the global state
@@ -24,6 +24,29 @@ export function MessagesProvider({ children }: { children: ReactNode }) {
     setState((prevState) => [...prevState, result.data]);
   }, []);
 
+  const sendAudioMessage = useCallback(async (data: Blob) => {
+    setLoading(true);
+    const formData = new FormData();
+    formData.append("audio", data, "audio.mp4");
+
+    try {
+      const result = await instance("/users/voice", {
+        method: "POST",
+        data: formData,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      setState((prevState) => [...prevState, result.data]);
+      console.log(result.data);
+      // sendMessage(result.data.text);
+    } finally {
+      setLoading(false);
+    }
+
+  }, []);
+
   useEffect(() => {
     if (user?.messages?.length) {
       setState(user.messages);
@@ -33,7 +56,7 @@ export function MessagesProvider({ children }: { children: ReactNode }) {
   }, [user]);
 
   return (
-    <MessagesContext.Provider value={{ messages: state, isLoading, sendMessage }}>
+    <MessagesContext.Provider value={{ messages: state, isLoading, sendMessage, sendAudioMessage }}>
       {children}
     </MessagesContext.Provider>
   );

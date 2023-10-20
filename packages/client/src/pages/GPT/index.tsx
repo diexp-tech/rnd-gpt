@@ -1,14 +1,12 @@
-import AudioRecorder2 from "@/components/AudioRecorder2";
-import Dictaphone from "@/components/Dictaphone";
 import { useMessages } from "@/store/messages";
 import { MessageRole } from "@/types/message-role.enum";
-import { AppBar, Box, Grid, Skeleton, Typography } from "@mui/material";
+import { AppBar, Box, Grid, Paper, Skeleton, Typography } from "@mui/material";
 import React, { useCallback, useEffect } from "react";
 import { toast } from "react-toastify";
 import { ChatText, MessageTextInput } from "./components";
 
 export const GPT = () => {
-  const { messages, isLoading: isMessageLoading, sendMessage } = useMessages();
+  const { messages, isLoading: isMessageLoading, sendMessage, isAudioLoading } = useMessages();
 
   const sendUserMessage = useCallback<(text: string) => void>((text: string) => {
     if (isMessageLoading) {
@@ -26,6 +24,39 @@ export const GPT = () => {
     }
   }, [messages]);
 
+  if (!messages?.length) {
+    return (
+      <Grid
+        container
+        direction="column"
+        flex={1}
+        padding={0.5}
+        gap={0.5}
+        overflow="hidden"
+      >
+        <Grid
+          container
+          flex={1}
+          direction="column"
+          overflow="auto"
+          spacing={1}
+          paddingTop={2.5}
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Paper style={{ padding: 5, maxWidth: "30%", minWidth: 250 }}>
+            <Typography variant="h5" align="center">OpenAI chat example</Typography>
+            <Typography>Current example allows you to communicate with OpenAI Chat GPT 4 via text or speech recognised
+              by OpenAI Whisper-1 model</Typography>
+          </Paper>
+        </Grid>
+        <Grid item width="100%">
+          <MessageTextInput setMessage={sendUserMessage} />
+        </Grid>
+      </Grid>
+    );
+  }
+
   return (
     <Grid
       container
@@ -35,9 +66,6 @@ export const GPT = () => {
       gap={0.5}
       overflow="hidden"
     >
-      <AppBar>
-        <Typography>GPT Example App</Typography>
-      </AppBar>
       <Grid
         container
         flex={1}
@@ -66,14 +94,15 @@ export const GPT = () => {
               <ChatText>{el.text}</ChatText>
             </Box>
           ))}
-          {isMessageLoading && (
+          {(isMessageLoading || isAudioLoading) && (
             <Box
               component={Grid}
               container
               direction="row"
               item
               xs={12}
-              justifyContent="start"
+              justifyContent={isMessageLoading ? "start" : "end"}
+              marginTop={1}
             >
               <Skeleton variant="rounded" width="35%" height={32} />
             </Box>
@@ -82,7 +111,6 @@ export const GPT = () => {
       </Grid>
       <Grid item width="100%">
         <MessageTextInput setMessage={sendUserMessage} />
-        <Dictaphone />
       </Grid>
     </Grid>
   );

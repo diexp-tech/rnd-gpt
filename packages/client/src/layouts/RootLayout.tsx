@@ -1,18 +1,23 @@
-import GlobalStyle from '@/components/GlobalStyle';
-import { Box, CssBaseline } from '@mui/material';
-import React, { FC } from 'react';
-import styled from 'styled-components';
+import GlobalStyle from "@/components/GlobalStyle";
+import { AppBar, Box, CssBaseline, Grid, Typography } from "@mui/material";
+import React, { FC } from "react";
+import styled from "styled-components";
+import HorizontalLogo from "@/assets/HorisontalLogo.svg";
 
 export const RootContainer = styled(Box)`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-items: center;
-  height: calc(100vh - 10px);
-  transition: ${({ theme }) =>
-          theme.transitions.create('padding-left', {
-            duration: theme.transitions.duration.short,
-          })};
+  height: 100%;
+`;
+
+const ContainerAppBar = styled(AppBar)`
+  background-color: #E5F2F1;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 interface IAuthLayout {
@@ -25,6 +30,9 @@ const RootLayout: FC<IAuthLayout> = ({ children }: IAuthLayout) => {
       <CssBaseline />
       <GlobalStyle />
       <RootContainer>
+        <ContainerAppBar>
+          <img src={HorizontalLogo} height={48} />
+        </ContainerAppBar>
         {children}
       </RootContainer>
     </>

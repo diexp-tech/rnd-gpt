@@ -5,4 +5,5 @@ export interface IMessagesState {
   sendMessage: (text: string) => void;
   sendAudioMessage: (data: Blob) => void;
   isLoading: boolean;
+  isAudioLoading: boolean;
 }

@@ -13,6 +13,7 @@ export function MessagesProvider({ children }: { children: ReactNode }) {
   const [{ user }, setStoreState] = useStore();
   const [state, setState] = useState<IMessage[]>([]);
   const [isLoading, setLoading] = useState<boolean>(false);
+  const [isAudioLoading, setAudioLoading] = useState<boolean>(false);
 
   const sendMessage = useCallback(async (text: string) => {
     setLoading(true);
@@ -25,10 +26,9 @@ export function MessagesProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const sendAudioMessage = useCallback(async (data: Blob) => {
-    setLoading(true);
+    setAudioLoading(true);
     const formData = new FormData();
     formData.append("audio", data, "audio.mp4");
-
     try {
       const result = await instance("/users/voice", {
         method: "POST",
@@ -38,13 +38,10 @@ export function MessagesProvider({ children }: { children: ReactNode }) {
         },
       });
 
-      setState((prevState) => [...prevState, result.data]);
-      console.log(result.data);
-      // sendMessage(result.data.text);
+      sendMessage(result.data.text);
     } finally {
-      setLoading(false);
+      setAudioLoading(false);
     }
-
   }, []);
 
   useEffect(() => {
@@ -56,7 +53,7 @@ export function MessagesProvider({ children }: { children: ReactNode }) {
   }, [user]);
 
   return (
-    <MessagesContext.Provider value={{ messages: state, isLoading, sendMessage, sendAudioMessage }}>
+    <MessagesContext.Provider value={{ messages: state, isLoading, isAudioLoading, sendMessage, sendAudioMessage }}>
       {children}
     </MessagesContext.Provider>
   );

@@ -35,13 +35,8 @@ export class UsersController {
         limits: {
           fileSize: 1024e5,
         },
-        // storage: diskStorage({
-        //   destination: "files",
-        //   filename: (_, file, cb) => {
-        //     cb(null, `${file.originalname}`);
-        //   },
-        // }),
-      }))
+      }),
+  )
   async uploadFile(
     @UploadMusicFile() file: Express.Multer.File,
     @ReqUserId() userId: string,

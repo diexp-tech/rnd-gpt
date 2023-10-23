@@ -1,8 +1,4 @@
-name: Develop deployment workflow
-#on:
-#  push:
-#    branches:
-#      - 'develop'
+name: Fly deployment workflow
 
 on:
   workflow_call:

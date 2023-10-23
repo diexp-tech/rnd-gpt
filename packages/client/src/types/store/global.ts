@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "React";
+import { Dispatch, SetStateAction } from "react";
 
 /**
  * Defines the overall state structure for your application.

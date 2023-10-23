@@ -10,6 +10,7 @@ import {
   GlobalServiceExceptionFilter,
 } from "./common/filters";
 import { rootDbConfig } from "./database";
+import { HealthModule } from "./modules/health";
 import { UsersModule } from "./modules/users";
 
 @Module({
@@ -17,6 +18,7 @@ import { UsersModule } from "./modules/users";
     ConfigModule.forRoot({ isGlobal: true }),
     UsersModule,
     TypeOrmModule.forRootAsync(rootDbConfig),
+    HealthModule,
   ],
   controllers: [],
   providers: [

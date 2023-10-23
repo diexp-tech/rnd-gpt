@@ -9,6 +9,7 @@ export const ChatText = styled(Paper)`
   margin-top: ${({ theme }) => theme.spacing(1)};
   border-radius: 10px;
   max-width: 35%;
+  overflow: hidden;
 `;
 
 export const MessageTextInput: FunctionComponent<{

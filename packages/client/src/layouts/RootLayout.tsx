@@ -20,6 +20,13 @@ const ContainerAppBar = styled(AppBar)`
   align-items: center;
 `;
 
+const ChildrenContainer = styled(Box)`
+  margin-top: 48px;
+  display: flex;
+  width: 100%;
+  flex: 1
+`;
+
 interface IAuthLayout {
   children: React.ReactElement;
 }
@@ -33,7 +40,9 @@ const RootLayout: FC<IAuthLayout> = ({ children }: IAuthLayout) => {
         <ContainerAppBar>
           <img src={HorizontalLogo} height={48} />
         </ContainerAppBar>
-        {children}
+        <ChildrenContainer>
+          {children}
+        </ChildrenContainer>
       </RootContainer>
     </>
   );

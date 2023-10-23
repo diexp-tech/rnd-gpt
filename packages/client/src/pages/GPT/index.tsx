@@ -40,7 +40,7 @@ export const GPT = () => {
           direction="column"
           overflow="auto"
           spacing={1}
-          paddingTop={2.5}
+          // paddingTop={2.5}
           justifyContent="center"
           alignItems="center"
         >
@@ -67,18 +67,18 @@ export const GPT = () => {
       overflow="hidden"
     >
       <Grid
-        container
         flex={1}
         direction="column"
         overflow="auto"
+        container
         spacing={1}
-        paddingTop={2.5}
-        justifyContent="flex-end"
       >
         <Box
           overflow="auto"
           paddingLeft={1.25}
+          paddingRight={0.25}
           paddingY={0.5}
+          maxWidth="100%"
         >
           {messages.map((el, index) => (
             <Box
@@ -91,7 +91,9 @@ export const GPT = () => {
               xs={12}
               justifyContent={el.role === MessageRole.CHAT_GPT ? "start" : "end"}
             >
-              <ChatText>{el.text}</ChatText>
+              <ChatText>
+                <Typography>{el.text}</Typography>
+              </ChatText>
             </Box>
           ))}
           {(isMessageLoading || isAudioLoading) && (

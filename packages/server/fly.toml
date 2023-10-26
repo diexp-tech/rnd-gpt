@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for openai-rnd on 2023-10-23T16:31:32+03:00
+# fly.toml app configuration file generated for openai-rnd on 2023-10-25T20:42:55+03:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -7,7 +7,7 @@ app = "openai-rnd"
 primary_region = "ams"
 
 [build]
-  builder = "heroku/buildpacks:20"
+  dockerfile = "Dockerfile"
 
 [http_service]
   internal_port = 8080

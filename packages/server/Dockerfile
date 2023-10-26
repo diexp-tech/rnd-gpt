@@ -1,30 +1,36 @@
-FROM node:20.5 as build
+FROM node:20.5-slim as base
+
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
 
 RUN mkdir -p /opt/node_app && chown -R node:node /opt/node_app
 WORKDIR /opt/node_app
 
-USER node
+COPY package*.json ./
+COPY pnpm-lock.yaml ./
+COPY tsconfig.json tsconfig.build.json ./
+COPY src ./src
 
-COPY --chown=node:node package*.json ./
-RUN npm ci
-
-COPY --chown=node:node tsconfig.json tsconfig.build.json ./
-COPY --chown=node:node src ./src
-
-RUN npm run build
-
-FROM node:20.5-alpine
-
-RUN mkdir -p /opt/node_app && chown -R node:node /opt/node_app
+FROM base AS prod-deps
 WORKDIR /opt/node_app
 
-USER node
+RUN pnpm install --prod --frozen-lockfile
 
-COPY --chown=node:node --from=build /opt/node_app/package.json /opt/node_app/package-lock.json ./
-COPY --chown=node:node --from=build /opt/node_app/node_modules ./node_modules
-COPY --chown=node:node --from=build /opt/node_app/dist ./dist
+FROM base AS build
+WORKDIR /opt/node_app
 
-RUN npm prune --omit=dev --json && npm cache clean --force
+RUN pnpm install --frozen-lockfile
+RUN pnpm run build
+
+FROM base
+
+COPY --from=prod-deps /opt/node_app/node_modules ./node_modules
+COPY --from=build /opt/node_app/dist ./dist
+
+RUN apt-get -y update
+RUN apt-get -y upgrade
+RUN apt-get install -y ffmpeg
 
 ARG VERSION
 ARG PORT=3000
@@ -36,4 +42,4 @@ ENV NODE_ENV=production
 ENV NODE_OPTIONS="--enable-source-maps"
 
 EXPOSE $PORT
-CMD [ "node", "start:prod"]
+CMD [ "pnpm", "run", "start:prod"]

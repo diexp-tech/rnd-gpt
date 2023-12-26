@@ -1,8 +1,9 @@
-import GlobalStyle from "@/components/GlobalStyle";
-import { AppBar, Box, CssBaseline, Grid, Typography } from "@mui/material";
-import React, { FC } from "react";
-import styled from "styled-components";
-import HorizontalLogo from "@/assets/HorisontalLogo.svg";
+import HorizontalLogo from '@/assets/HorisontalLogo.svg';
+import GlobalStyle from '@/components/GlobalStyle';
+import { EmailOutlined } from '@mui/icons-material';
+import { AppBar, Box, CssBaseline, IconButton, Tooltip } from '@mui/material';
+import React, { FC } from 'react';
+import styled from 'styled-components';
 
 export const RootContainer = styled(Box)`
   display: flex;
@@ -13,15 +14,17 @@ export const RootContainer = styled(Box)`
 `;
 
 const ContainerAppBar = styled(AppBar)`
-  background-color: #E5F2F1;
-  height: 48px;
+  background-color: #d8d8d8;
+  height: 68px;
+  padding: 10px 40px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: start;
+  flex-direction: row;
 `;
 
 const ChildrenContainer = styled(Box)`
-  margin-top: 48px;
+  margin-top: 68px;
   display: flex;
   width: 100%;
   flex: 1
@@ -39,6 +42,11 @@ const RootLayout: FC<IAuthLayout> = ({ children }: IAuthLayout) => {
       <RootContainer>
         <ContainerAppBar>
           <img src={HorizontalLogo} height={48} />
+          <Tooltip title={'Contact Us!'}>
+            <IconButton sx={{ margin: 'auto 0 auto auto' }} onClick={() => window.open('mailto:yaroslav@diexp.tech')}>
+              <EmailOutlined />
+            </IconButton>
+          </Tooltip>
         </ContainerAppBar>
         <ChildrenContainer>
           {children}
